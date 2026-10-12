@@ -37,7 +37,6 @@ ACF Pro Flexible Content · Custom Post Types · Pure CSS · Vanilla JS · Local
 - [Deploying the theme](#deploying-the-theme)
 - [Updating an existing project](#updating-an-existing-project)
 - [Troubleshooting](#troubleshooting)
-- [Project website](#project-website)
 - [Credits](#credits)
 
 ## Why
@@ -392,13 +391,6 @@ the template files you want.
 | CPT pages return 404 | **Settings > Permalinks > Save Changes** |
 | "Sync available" in ACF | Normal: the site reads fields from `acf-json/`. Click **Sync** only before editing that group in the admin |
 | Something else looks wrong | Run `/doctor` for a workflow health check and repair order |
-
-## Project website
-
-The website is a single static file, [`docs/index.html`](docs/index.html), with
-no build step. To publish it with GitHub Pages: **Settings > Pages > Build and
-deployment > Deploy from a branch**, choose `main` and `/docs`, then save. It is
-served at <https://saidmounaim.github.io/figma-wp-blueprint/>.
 
 ## Credits
 
