@@ -1,6 +1,6 @@
 ---
 name: onboard
-description: Set up a new wp-ai-workflow theme project after copying the workflow files into a LocalWP theme folder - confirm Git, LocalWP site, theme identity, ACF Pro, Figma token, browser automation, PHP CLI, commands, and review preferences. Use for /onboard or what to do after installing the workflow.
+description: Set up a new figma-wp-blueprint theme project after copying the workflow files into a LocalWP theme folder - confirm Git, LocalWP site, theme identity, ACF Pro, Figma token, browser automation, PHP CLI, commands, and review preferences. Use for /onboard or what to do after installing the workflow.
 disable-model-invocation: true
 ---
 
@@ -33,7 +33,7 @@ hint and verify it.
 2. Confirm Git (`git rev-parse --is-inside-work-tree`). If it is not a repo, ask
    once: `Initialize Git in the theme folder? (Recommended)`. On yes run
    `git init -b main`. If `HEAD` is unborn, offer one commit of the workflow files
-   as `chore: add wp-ai-workflow` after showing the file list. Never commit
+   as `chore: add figma-wp-blueprint` after showing the file list. Never commit
    without approval and never push.
 
 ## Step 1 - project identity

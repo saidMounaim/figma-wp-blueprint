@@ -1,6 +1,6 @@
 # AI Interaction Guidelines
 
-> **wp-ai-workflow lives inside the theme folder** of a LocalWP site
+> **figma-wp-blueprint lives inside the theme folder** of a LocalWP site
 > (`app/public/wp-content/themes/<theme-slug>/`). The theme skeleton itself is
 > created by `/wp-theme`; never install starter themes or page builders over it.
 

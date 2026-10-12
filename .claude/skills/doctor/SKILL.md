@@ -217,7 +217,7 @@ steps, in order. Keep it short and practical.
 
 Choose the repair order in this priority:
 
-- Required workflow files missing -> copy the wp-ai-workflow files into the
+- Required workflow files missing -> copy the figma-wp-blueprint files into the
   theme folder again.
 - Onboarding placeholders (`<theme-slug>`, `<prefix>_`) still in
   `coding-standards.md` -> run `/onboard`.
@@ -229,7 +229,7 @@ Choose the repair order in this priority:
 - Invalid `blueprint/config.json` -> fix the named key or value, then rerun
   `/doctor`. Do not mutate project work while configuration is ambiguous.
 - No git repo -> initialize git before using the build loop.
-- No `.claude/skills/` -> copy the wp-ai-workflow `.claude/` folder back in.
+- No `.claude/skills/` -> copy the figma-wp-blueprint `.claude/` folder back in.
 - Installed adapter is missing `doctor/scripts/run-state.mjs` -> update
   Blueprint before relying on dashboard activity.
 - Claude uses legacy direct context imports -> remove the exact direct imports

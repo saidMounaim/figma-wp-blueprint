@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Figma REST API helper for wp-ai-workflow. No dependencies (Node 18+).
+// Figma REST API helper for figma-wp-blueprint. No dependencies (Node 18+).
 // Token: FIGMA_TOKEN env var, or FIGMA_TOKEN=... in .env at the project root.
 
 import { mkdir, readFile, writeFile } from "node:fs/promises";

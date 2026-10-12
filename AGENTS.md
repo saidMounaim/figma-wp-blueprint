@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Instructions for AI coding agents working in **wp-ai-workflow** projects.
+Instructions for AI coding agents working in **figma-wp-blueprint** projects.
 Claude Code reads `CLAUDE.md`, which imports this file, so there is a single
 source of truth.
 
@@ -12,7 +12,7 @@ for optional tool settings.
 
 ## What this is
 
-**wp-ai-workflow** turns a Figma design into a pixel-perfect custom WordPress
+**figma-wp-blueprint** turns a Figma design into a pixel-perfect custom WordPress
 theme:
 
 - **Design:** Figma URLs, read through the Figma REST API by a local helper
@@ -222,7 +222,7 @@ Set by `/onboard` for the real site. Defaults:
 - Verify: `find . -name "*.php" -not -path "./vendor/*" -not -path "./node_modules/*" -print0 | xargs -0 -n1 php -l | grep -v "No syntax errors"; for f in acf-json/*.json; do php -r "json_decode(file_get_contents('$f')); exit(json_last_error() ? 1 : 0);" || echo "Invalid JSON: $f"; done`
   (passes when it prints nothing)
 - Package theme: zip the theme folder excluding `AGENTS.md`, `CLAUDE.md`,
-  `.claude/`, `blueprint/`, and `.git/`
+  `.claude/`, `blueprint/`, `.env`, and `.git/`
 
 There is no unit test runner and no build step. See the Testing section of
 `blueprint/context/coding-standards.md` for the evidence each step needs.

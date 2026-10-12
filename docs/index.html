@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>figma-wp-blueprint</title>
+<meta name="description" content="Claude Code skills that turn a Figma URL into a pixel-perfect custom WordPress theme: ACF Pro Flexible Content, Custom Post Types, pure CSS, vanilla JS, LocalWP.">
+<meta property="og:title" content="figma-wp-blueprint">
+<meta property="og:description" content="From a Figma URL to a pixel-perfect custom WordPress theme, built with Claude Code.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231D4F91'/%3E%3Cpath d='M8 10h16M8 16h10M8 22h13' stroke='%23fff' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a single cyanotype sheet. Drafting grid behind the hero, Figma-style
+   redlines as the one loud element, everything else quiet and left-aligned. */
+:root {
+  --paper: #F3F6FA;
+  --surface: #FFFFFF;
+  --ink: #0F1D30;
+  --muted: #4A5B72;
+  --line: #D3DCE8;
+  --blue: #1D4F91;
+  --blue-soft: #E3ECF8;
+  --redline: #D9363C;
+  --grid: rgba(29, 79, 145, 0.07);
+  --code: #0F1D30;
+  --code-fg: #DCE6F2;
+  --code-dim: #8DA2BD;
+  --ok: #1F7A4D;
+
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --step-0: 1rem;
+  --step-1: 1.125rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem);
+  --step-4: clamp(2.3rem, 1.5rem + 3vw, 3.7rem);
+  --wrap: 72rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0A1422; --surface: #101D30; --ink: #E3ECF7; --muted: #9DB0C8;
+    --line: #23364F; --blue: #7DAEEE; --blue-soft: #152A47; --redline: #FF6B70;
+    --grid: rgba(125, 174, 238, 0.07); --code: #060D17; --code-fg: #DCE6F2;
+    --code-dim: #7F93AE; --ok: #5BD08F; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0A1422; --surface: #101D30; --ink: #E3ECF7; --muted: #9DB0C8;
+  --line: #23364F; --blue: #7DAEEE; --blue-soft: #152A47; --redline: #FF6B70;
+  --grid: rgba(125, 174, 238, 0.07); --code: #060D17; --code-fg: #DCE6F2;
+  --code-dim: #7F93AE; --ok: #5BD08F; color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--step-0)/1.6 var(--body);
+}
+img { max-width: 100%; }
+a { color: var(--blue); text-underline-offset: 0.2em; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--redline); outline-offset: 3px; border-radius: 4px; }
+code, pre, kbd { font-family: var(--mono); font-size: 0.9em; }
+:not(pre) > code { background: var(--blue-soft); color: var(--ink); padding: 0.1em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 20px; }
+@media (min-width: 720px) { .wrap { padding-inline: 32px; } }
+
+h1, h2, h3 { font-family: var(--display); font-stretch: 112%; line-height: 1.05; text-wrap: balance; margin: 0; }
+h2 { font-size: var(--step-3); font-weight: 750; letter-spacing: -0.01em; }
+h3 { font-size: var(--step-1); font-weight: 700; font-stretch: 100%; line-height: 1.25; }
+p { margin: 0; }
+.eyebrow {
+  font: 500 0.78rem/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.lede { color: var(--muted); font-size: var(--step-1); max-width: 40rem; }
+
+/* Header */
+.site-head { border-bottom: 1px solid var(--line); }
+.site-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 16px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; font: 600 0.98rem/1 var(--mono); color: var(--ink); text-decoration: none; }
+.brand svg { flex: none; }
+.site-nav { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.95rem; }
+.site-nav a { color: var(--muted); text-decoration: none; }
+.site-nav a:hover { color: var(--ink); }
+.site-nav .gh { color: var(--ink); font-weight: 600; }
+
+/* Hero */
+.hero {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border-bottom: 1px solid var(--line);
+}
+.hero .wrap { display: grid; gap: 48px; padding-block: 64px 72px; }
+@media (min-width: 960px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: center; padding-block: 88px 96px; }
+}
+.hero h1 { font-size: var(--step-4); font-stretch: 104%; font-weight: 800; letter-spacing: -0.02em; margin-block: 18px 22px; }
+.hero h1 .out { color: var(--blue); }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 32px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 600 0.98rem/1 var(--body);
+  padding: 14px 20px; border-radius: 8px; text-decoration: none;
+  background: var(--blue); color: var(--paper); border: 1px solid var(--blue);
+}
+.btn:hover { filter: brightness(1.08); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { border-color: var(--ink); filter: none; }
+.stack-line { margin-top: 28px; font: 400 0.85rem/1.6 var(--mono); color: var(--muted); }
+
+/* The Figma frame with redlines */
+.frame { min-width: 0; }
+.frame__label { display: flex; justify-content: space-between; gap: 12px; font: 500 0.75rem/1 var(--mono); color: var(--muted); margin-bottom: 30px; }
+.frame__label b { color: var(--blue); font-weight: 500; }
+.board { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px; box-shadow: 0 20px 40px -24px rgba(15, 29, 48, 0.35); }
+.dim {
+  position: absolute; left: 0; right: 0; top: -20px; height: 10px;
+  border-inline: 1px solid var(--redline);
+  transform-origin: center; animation: draw 0.7s 0.2s ease-out both;
+}
+.dim::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid var(--redline); }
+.dim span {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  background: var(--redline); color: #fff; font: 500 0.7rem/1 var(--mono);
+  padding: 3px 6px; border-radius: 3px;
+}
+@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.layers { display: grid; gap: 8px; }
+.layer {
+  position: relative; border: 1px dashed var(--line); border-radius: 4px;
+  padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  font: 500 0.78rem/1.2 var(--mono); color: var(--muted);
+}
+.layer em { font-style: normal; color: var(--blue); white-space: nowrap; }
+.layer--hero { border: 1.5px solid var(--blue); background: var(--blue-soft); color: var(--ink); padding: 34px 44px 30px; display: grid; gap: 10px; justify-content: stretch; }
+.layer--hero .bar { height: 10px; border-radius: 2px; background: var(--ink); opacity: 0.85; width: 78%; }
+.layer--hero .bar.s { width: 52%; opacity: 0.35; height: 7px; }
+.layer--hero .pill { width: 96px; height: 22px; border-radius: 4px; background: var(--blue); margin-top: 6px; }
+.layer--hero .tag { position: absolute; top: -9px; left: 10px; background: var(--blue); color: var(--paper); font-size: 0.68rem; padding: 2px 6px; border-radius: 3px; }
+.gap-v, .gap-h { position: absolute; color: var(--redline); font: 500 0.66rem/1 var(--mono); }
+.gap-v { top: 0; left: 50%; height: 34px; border-left: 1px solid var(--redline); padding-left: 4px; display: flex; align-items: center; }
+.gap-h { left: 0; top: 50%; width: 44px; border-top: 1px solid var(--redline); padding-top: 3px; justify-content: center; display: flex; }
+.cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.cols .layer { padding-block: 22px; justify-content: center; }
+@media (prefers-reduced-motion: reduce) { .dim { animation: none; } }
+
+/* Sections */
+section.block { padding-block: 80px; border-bottom: 1px solid var(--line); }
+.block__head { display: grid; gap: 14px; margin-bottom: 44px; max-width: 46rem; }
+.block__head p { color: var(--muted); }
+
+/* Mapping */
+.map { display: grid; gap: 24px; }
+@media (min-width: 900px) { .map { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: start; } }
+.node { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px; min-width: 0; }
+.node dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 16px 0 0; font: 400 0.85rem/1.4 var(--mono); }
+.node dt { color: var(--muted); }
+.node dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.node .url { font: 400 0.8rem/1.5 var(--mono); color: var(--blue); overflow-wrap: anywhere; }
+.files { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.files li { display: grid; gap: 4px 20px; padding: 16px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+@media (min-width: 640px) { .files li { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: baseline; } }
+.files code { background: none !important; padding: 0 !important; font-size: 0.88rem; color: var(--ink); }
+.files code b { color: var(--blue); font-weight: 500; }
+.files span { color: var(--muted); font-size: 0.95rem; }
+.opt { font: 500 0.7rem/1 var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 2px 5px; margin-left: 6px; vertical-align: 2px; }
+
+/* Workflow */
+.flow { display: grid; gap: 40px; }
+@media (min-width: 900px) { .flow { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); } }
+.flow h3 { margin-bottom: 14px; display: flex; gap: 10px; align-items: baseline; }
+.flow h3 small { font: 400 0.8rem/1 var(--mono); color: var(--muted); }
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 0; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 2px 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+.steps li::before { content: counter(s, decimal-leading-zero); grid-row: span 2; font: 500 0.8rem/1.6 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.steps > li > code, .steps > li > div > code { justify-self: start; background: none !important; padding: 0 !important; color: var(--blue); font-weight: 500; font-size: 0.95rem; }
+.steps p { color: var(--muted); font-size: 0.95rem; }
+.loop-note { margin-top: 14px; font: 400 0.85rem/1.5 var(--mono); color: var(--muted); }
+
+/* Pixel check report */
+.report { background: var(--code); color: var(--code-fg); border-radius: 10px; padding: 22px; min-width: 0; }
+.report__top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font: 400 0.82rem/1.5 var(--mono); color: var(--code-dim); margin-bottom: 16px; }
+.report__top b { color: var(--code-fg); font-weight: 500; }
+.scroll { overflow-x: auto; }
+.report table { width: 100%; min-width: 640px; border-collapse: collapse; font: 400 0.82rem/1.4 var(--mono); font-variant-numeric: tabular-nums; }
+.report th { text-align: left; font-weight: 500; color: var(--code-dim); padding: 8px 10px; border-bottom: 1px solid rgba(141, 162, 189, 0.3); }
+.report td { padding: 9px 10px; border-bottom: 1px solid rgba(141, 162, 189, 0.15); }
+.report .bad { color: var(--redline); }
+.verdicts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.verdict { font: 500 0.78rem/1 var(--mono); padding: 7px 10px; border-radius: 4px; border: 1px solid rgba(141, 162, 189, 0.35); color: var(--code-fg); }
+.verdict.fail { border-color: var(--redline); color: var(--redline); }
+.verdict.pass::before { content: "\2713  "; color: var(--ok); }
+.tolerance { display: grid; gap: 6px; margin-top: 24px; color: var(--muted); font-size: 0.95rem; }
+.example { font: 500 0.7rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--code-dim); }
+
+/* Principles */
+.grid-2 { display: grid; gap: 28px; }
+@media (min-width: 900px) { .grid-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+.rules { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+.rules li { display: grid; gap: 4px; }
+.rules strong { font-family: var(--display); font-stretch: 100%; font-size: var(--step-1); }
+.rules p { color: var(--muted); }
+pre.code { margin: 0; background: var(--code); color: var(--code-fg); padding: 20px 22px; border-radius: 10px; overflow-x: auto; font-size: 0.82rem; line-height: 1.65; min-width: 0; }
+pre.code .c { color: var(--code-dim); }
+pre.code .k { color: #9CC3F5; }
+pre.code .f { color: #F5B97F; }
+.nos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.nos span { font: 500 0.8rem/1 var(--mono); padding: 8px 10px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
+.nos span::before { content: "no "; color: var(--redline); }
+
+/* Skills */
+.skills { display: grid; gap: 40px; }
+@media (min-width: 900px) { .skills { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
+.skills h3 { margin-bottom: 8px; }
+.skill-list { margin: 0; display: grid; }
+.skill-list div { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+@media (max-width: 480px) { .skill-list div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+.skill-list dt { font: 500 0.9rem/1.5 var(--mono); color: var(--blue); }
+.skill-list dd { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+/* Setup */
+.setup { display: grid; gap: 40px; }
+@media (min-width: 900px) { .setup { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); } }
+.setup .steps li { padding-block: 16px; }
+.setup .steps li > div { color: var(--ink); min-width: 0; }
+.setup .steps small { color: var(--muted); font-size: 0.9rem; display: block; margin-top: 4px; }
+.clone { display: flex; align-items: stretch; margin-top: 10px; border-radius: 8px; overflow: hidden; background: var(--code); min-width: 0; }
+.clone pre { margin: 0; flex: 1; min-width: 0; overflow-x: auto; padding: 14px 16px; color: var(--code-fg); font-size: 0.8rem; line-height: 1.6; }
+.clone button {
+  flex: none; border: 0; border-left: 1px solid rgba(141, 162, 189, 0.25); background: transparent;
+  color: var(--code-fg); font: 500 0.8rem/1 var(--mono); padding: 0 16px; cursor: pointer;
+}
+.clone button:hover { background: rgba(141, 162, 189, 0.12); }
+.reqs { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+.reqs li { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+.reqs li span:last-child { color: var(--muted); text-align: right; }
+
+/* Footer */
+.site-foot { padding-block: 40px 56px; color: var(--muted); font-size: 0.92rem; }
+.site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="figma-wp-blueprint home">
+      <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="currentColor" style="color: var(--blue)"/><path d="M8 10h16M8 16h10M8 22h13" stroke="var(--paper)" stroke-width="2.5" stroke-linecap="round"/></svg>
+      figma-wp-blueprint
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#section">How it works</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#skills">Skills</a>
+      <a href="#setup">Setup</a>
+      <a class="gh" href="https://github.com/saidMounaim/figma-wp-blueprint">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Claude Code skills for WordPress</p>
+        <h1>Figma frame in.<br><span class="out">Custom WordPress theme out.</span></h1>
+        <p class="lede">Paste a Figma URL. Claude Code extracts the design tokens, builds every section as an ACF Flexible Content layout, and measures the result against Figma at each breakpoint before anything is merged.</p>
+        <div class="cta-row">
+          <a class="btn" href="https://github.com/saidMounaim/figma-wp-blueprint">Get it on GitHub</a>
+          <a class="btn btn--ghost" href="#setup">Set up a project</a>
+        </div>
+        <p class="stack-line">ACF Pro · Custom Post Types · pure CSS · vanilla JS · LocalWP</p>
+      </div>
+
+      <div class="frame" aria-label="Illustration: a Figma frame with measurement redlines">
+        <div class="frame__label"><span><b>#</b> Home - 1440</span><span>node-id=12-34</span></div>
+        <div class="board">
+          <div class="dim"><span>1440</span></div>
+          <div class="layers">
+            <div class="layer">Header <em>header.php</em></div>
+            <div class="layer layer--hero">
+              <span class="tag">Hero</span>
+              <span class="gap-v">64</span>
+              <span class="gap-h">80</span>
+              <div class="bar"></div>
+              <div class="bar s"></div>
+              <div class="pill"></div>
+            </div>
+            <div class="cols">
+              <div class="layer">Card</div>
+              <div class="layer">Card</div>
+              <div class="layer">Card</div>
+            </div>
+            <div class="layer">Testimonials <em>layout_testimonials</em></div>
+            <div class="layer">Footer <em>footer.php</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="block" id="section">
+    <div class="wrap">
+      <div class="block__head">
+        <p class="eyebrow">How it works</p>
+        <h2>One Figma section becomes one layout, with the same name everywhere</h2>
+        <p>Every section in the design is built the same way: an ACF field group, a page-builder layout, a PHP template part, scoped CSS, and JavaScript only when the section actually moves. Editors add sections in wp-admin; nothing is hard-coded to a page.</p>
+      </div>
+      <div class="map">
+        <div class="node">
+          <p class="eyebrow">Figma node</p>
+          <h3 style="margin-top:10px">Hero</h3>
+          <p class="url">figma.com/design/&lt;file-key&gt;/Site?node-id=12-34</p>
+          <dl>
+            <dt>frames</dt><dd>1440 · 768 · 375</dd>
+            <dt>padding</dt><dd>64 / 80</dd>
+            <dt>fields</dt><dd>eyebrow, heading, text, image, button</dd>
+            <dt>layout</dt><dd>hero</dd>
+          </dl>
+        </div>
+        <ul class="files">
+          <li><code>acf-json/<b>group_section_hero</b>.json</code><span>The section's fields, saved as local JSON with fixed keys.</span></li>
+          <li><code>acf-json/group_page_builder.json</code><span>Adds <code>layout_hero</code>, which clones those fields into the page builder.</span></li>
+          <li><code>template-parts/sections/<b>hero</b>.php</code><span>Markup that reads <code>get_sub_field()</code> and escapes every value.</span></li>
+          <li><code>assets/css/sections/<b>hero</b>.css</code><span>Styles scoped to <code>.hero</code>, built only from Figma tokens.</span></li>
+          <li><div><code>assets/js/sections/<b>hero</b>.js</code> <span class="opt">optional</span></div><span>Vanilla JS, loaded only on pages that use the layout.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="workflow">
+    <div class="wrap">
+      <div class="block__head">
+        <p class="eyebrow">Workflow</p>
+        <h2>One feature at a time, behind review gates</h2>
+        <p>Each feature gets a spec, its own Git branch, a measured comparison with Figma, and an archived record in <code>blueprint/history/</code>. You approve the spec, each review, and the final commit.</p>
+      </div>
+      <div class="flow">
+        <div>
+          <h3>Set up <small>once per site</small></h3>
+          <ol class="steps">
+            <li><code>/onboard</code><p>Checks the theme folder, Git, PHP, ACF Pro, and your Figma token. Sets the theme name, slug, and prefix.</p></li>
+            <li><code>/figma &lt;url&gt;</code><p>Reads colors, type, spacing, breakpoints, and sections. Proposes a build plan.</p></li>
+            <li><code>/overview</code><p>Turns the approved plan into a numbered feature list.</p></li>
+            <li><code>/wp-theme</code><p>Feature 1: theme skeleton, tokens, header, footer, and the page builder.</p></li>
+          </ol>
+        </div>
+        <div>
+          <h3>Build <small>repeat per feature</small></h3>
+          <ol class="steps">
+            <li><code>/feature</code><p>Writes the spec for the next item, such as "Home page sections" or a post type.</p></li>
+            <li><code>/implement</code><p>Builds it in small reviewed steps using the <code>/section</code>, <code>/acf</code>, and <code>/cpt</code> recipes.</p></li>
+            <li><code>/pixel-check</code><p>Measures the local page against Figma at every breakpoint.</p></li>
+            <li><div><code>/check</code> <span class="opt">optional</span></div><p>Proves the spec's done-when criteria in the running site.</p></li>
+            <li><div><code>/audit current</code> <span class="opt">optional</span></div><p>Reviews escaping, sanitizing, nonces, queries, and performance.</p></li>
+            <li><code>/complete</code><p>Archives the spec, then asks before it commits and merges.</p></li>
+          </ol>
+          <p class="loop-note">Then /feature again for the next item.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="pixel">
+    <div class="wrap">
+      <div class="block__head">
+        <p class="eyebrow">Pixel check</p>
+        <h2>Measured against Figma, not eyeballed</h2>
+        <p><code>/pixel-check</code> renders the local page at each designed width, reads computed styles and boxes, and compares them with the Figma values. It reports the exact difference and the file to fix. It never edits code.</p>
+      </div>
+      <div class="report">
+        <div class="report__top">
+          <span><b>/pixel-check</b> http://your-site.local/</span>
+          <span class="example">Example report</span>
+        </div>
+        <div class="scroll">
+          <table>
+            <caption class="example" style="text-align:left;padding-bottom:10px">Breakpoint 1440</caption>
+            <thead><tr><th>Element</th><th>Property</th><th>Figma</th><th>Browser</th><th>Diff</th><th>File to fix</th></tr></thead>
+            <tbody>
+              <tr><td>.hero__title</td><td>font-size</td><td>56px</td><td>52px</td><td class="bad">-4px</td><td>assets/css/sections/hero.css</td></tr>
+              <tr><td>.hero__inner</td><td>padding-top</td><td>64px</td><td>64px</td><td>0</td><td>-</td></tr>
+              <tr><td>.hero__eyebrow</td><td>color</td><td>#1D4F91</td><td>#1D4F91</td><td>0</td><td>-</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="verdicts">
+          <span class="verdict fail">1440: fail (1 difference)</span>
+          <span class="verdict pass">768: pass</span>
+          <span class="verdict pass">375: pass</span>
+        </div>
+      </div>
+      <div class="tolerance">
+        <p>Tolerance: 2px for spacing, size, and position. Font family, weight, color, and radius must match exactly.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="rules">
+    <div class="wrap grid-2">
+      <div>
+        <div class="block__head" style="margin-bottom:28px">
+          <p class="eyebrow">House rules</p>
+          <h2>Plain WordPress your team can maintain</h2>
+        </div>
+        <ul class="rules">
+          <li><strong>Classic PHP theme</strong><p>Template parts and <code>get_template_part()</code>. Any WordPress developer can read it.</p></li>
+          <li><strong>Tokens from Figma</strong><p>Colors, type, and spacing live in <code>assets/css/variables.css</code>. Section CSS uses only those custom properties.</p></li>
+          <li><strong>Safe by default</strong><p>Output is escaped, input is sanitized, forms use nonces, and queries are reviewed in <code>/audit</code>.</p></li>
+          <li><strong>Fields in version control</strong><p>ACF field groups are saved as JSON in <code>acf-json/</code> and committed with the code.</p></li>
+        </ul>
+        <div class="nos"><span>page builder</span><span>CSS framework</span><span>jQuery</span><span>build step</span></div>
+      </div>
+      <pre class="code" aria-label="Excerpt of template-parts/sections/hero.php"><span class="c">// template-parts/sections/hero.php</span>
+<span class="k">$heading</span> = <span class="f">get_sub_field</span>( 'heading' );
+<span class="k">$text</span>    = <span class="f">get_sub_field</span>( 'text' );
+
+<span class="k">if</span> ( ! <span class="k">$heading</span> ) {
+	<span class="k">return</span>;
+}
+?&gt;
+&lt;section class="hero" data-section="hero"&gt;
+  &lt;h1 class="hero__title"&gt;
+    &lt;?php <span class="k">echo</span> <span class="f">esc_html</span>( <span class="k">$heading</span> ); ?&gt;
+  &lt;/h1&gt;
+  &lt;div class="hero__text"&gt;
+    &lt;?php <span class="k">echo</span> <span class="f">wp_kses_post</span>( <span class="k">$text</span> ); ?&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+    </div>
+  </section>
+
+  <section class="block" id="skills">
+    <div class="wrap">
+      <div class="block__head">
+        <p class="eyebrow">Skills</p>
+        <h2>Slash commands you type in Claude Code</h2>
+        <p>The skills live in <code>.claude/skills/</code> inside your theme folder. They are chat commands in Claude Code, not terminal commands.</p>
+      </div>
+      <div class="skills">
+        <div>
+          <h3>WordPress</h3>
+          <dl class="skill-list">
+            <div><dt>/figma &lt;url&gt;</dt><dd>Extract tokens, breakpoints, fonts, sections, and post type candidates</dd></div>
+            <div><dt>/wp-theme</dt><dd>Theme foundation: setup, enqueue, ACF, page builder, header, footer</dd></div>
+            <div><dt>/section</dt><dd>One Figma section as a Flexible Content layout</dd></div>
+            <div><dt>/acf</dt><dd>Create or change field groups as JSON in <code>acf-json/</code></dd></div>
+            <div><dt>/cpt &lt;name&gt;</dt><dd>Custom Post Type with taxonomies, fields, archive, and single templates</dd></div>
+            <div><dt>/pixel-check</dt><dd>Measure the local page against Figma and report differences</dd></div>
+          </dl>
+        </div>
+        <div>
+          <h3>Workflow</h3>
+          <dl class="skill-list">
+            <div><dt>/feature, /fix</dt><dd>Spec the next plan item or an unplanned bug</dd></div>
+            <div><dt>/implement</dt><dd>Build the approved spec on its branch</dd></div>
+            <div><dt>/check, /audit</dt><dd>Verify behavior; review security and quality</dd></div>
+            <div><dt>/complete</dt><dd>Archive, commit, and merge with your approval</dd></div>
+            <div><dt>/status, /brief</dt><dd>Where you are and what comes next</dd></div>
+            <div><dt>/explore, /debug</dt><dd>Investigate without changing files</dd></div>
+            <div><dt>/rollback, /doctor</dt><dd>Undo a feature; check workflow health</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="setup">
+    <div class="wrap setup">
+      <div>
+        <div class="block__head" style="margin-bottom:28px">
+          <p class="eyebrow">Setup</p>
+          <h2>Start a project in five steps</h2>
+        </div>
+        <ol class="steps">
+          <li><div>Create a site in LocalWP and activate ACF Pro.<small>Turn on <code>WP_DEBUG_LOG</code> so the workflow can read PHP notices.</small></div></li>
+          <li><div>Create an empty theme folder and copy the workflow files into it.
+            <div class="clone">
+              <pre id="clone-cmd">git clone https://github.com/saidMounaim/figma-wp-blueprint.git
+cp -r figma-wp-blueprint/{AGENTS.md,CLAUDE.md,.claude,blueprint} \
+  "wp-content/themes/your-theme/"</pre>
+              <button type="button" id="copy-btn" aria-label="Copy commands">Copy</button>
+            </div></div></li>
+          <li><div>Add your Figma token to <code>.env</code> in the theme folder.<small><code>FIGMA_TOKEN=figd_...</code> with the scope File content: Read-only. The file is git-ignored.</small></div></li>
+          <li><div>Open the theme folder in Claude Code and run <code>/onboard</code>.<small>Open the theme folder itself, not the site root.</small></div></li>
+          <li><div>Run <code>/figma</code> with your design URL.<small>Design, file, proto, and board links all work, with or without <code>?node-id=</code>.</small></div></li>
+        </ol>
+      </div>
+      <div>
+        <h3 style="margin-bottom:14px">Requirements</h3>
+        <ul class="reqs">
+          <li><span>LocalWP</span><span>local WordPress 6.5+</span></li>
+          <li><span>ACF Pro</span><span>Flexible Content, clone fields</span></li>
+          <li><span>Claude Code</span><span>CLI or VS Code extension</span></li>
+          <li><span>Node.js 18+</span><span>Figma helper script</span></li>
+          <li><span>PHP CLI</span><span><code>php -l</code> syntax checks</span></li>
+          <li><span>Git</span><span>one branch per feature</span></li>
+          <li><span>Figma token</span><span>view access to the file</span></li>
+          <li><span>Playwright MCP</span><span>optional, for /pixel-check</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>figma-wp-blueprint · built on the <a href="https://ai-blueprint.dev/docs/getting-started/">AI Blueprint</a> workflow</span>
+    <a href="https://github.com/saidMounaim/figma-wp-blueprint">github.com/saidMounaim/figma-wp-blueprint</a>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.getElementById('copy-btn');
+    var cmd = document.getElementById('clone-cmd');
+    if (!btn || !cmd) return;
+    btn.addEventListener('click', function () {
+      var text = cmd.textContent;
+      var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1600); };
+      var fallback = function () {
+        var range = document.createRange();
+        range.selectNodeContents(cmd);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        btn.textContent = 'Selected';
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+    });
+  })();
+</script>
+</body>
+</html>
