@@ -1,0 +1,14 @@
+# Secrets
+.env
+
+# Generated workflow state
+blueprint/.state/run.json
+blueprint/.state/figma/
+blueprint/.state/backups/
+blueprint/.state/staging/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
