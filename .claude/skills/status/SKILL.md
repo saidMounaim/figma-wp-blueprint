@@ -140,8 +140,8 @@ End with a single suggested next action, chosen in this order:
 - `current-feature.md` is the reset stub and unchecked build-plan items remain ->
   `/feature` and name the next build-plan item.
 - All build-plan items are checked -> say the current milestone is complete;
-  suggest a full-site `/pixel-check` pass, `/audit full`, and packaging the
-  theme for deployment when appropriate, or
+  suggest a full-site `/pixel-check` pass, `/seo-check all`, `/audit full`, and
+  packaging the theme for deployment when appropriate, or
   `/feature "new capability"` to propose an addition to the living build plan.
   Do not suggest creating a second build plan.
 

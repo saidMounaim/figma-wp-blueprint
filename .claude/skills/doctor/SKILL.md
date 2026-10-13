@@ -72,7 +72,7 @@ Gather these, then summarize. Do not dump file contents.
 2. **Tool adapters**
    - This workflow is Claude Code only. Confirm `.claude/skills/` exists and
      contains the WordPress skills (`figma`, `wp-theme`, `section`, `acf`, `cpt`,
-     `pixel-check`) plus the core loop skills.
+     `pixel-check`, `seo-check`) plus the core loop skills.
    - Confirm `.claude/skills/doctor/scripts/run-state.mjs` exists. A missing
      helper means tracked commands cannot record activity.
    - If `coding-standards.md` still contains `<theme-slug>`, flag that

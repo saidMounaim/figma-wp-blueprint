@@ -260,6 +260,7 @@ All commands are typed in the Claude Code chat, not in a terminal.
 | `/acf <change>` | Create or edit ACF field groups as JSON in `acf-json/` |
 | `/cpt <name>` | Custom Post Type with taxonomies, fields, archive, and single templates |
 | `/pixel-check <url> [figma-url]` | Measure the local page against Figma and report differences (read-only) |
+| `/seo-check [all | <url or slug> | <post-type>]` | Check pages for on-page SEO problems and where to fix them (read-only); asks which pages when run without an argument |
 
 ### Workflow skills
 
@@ -351,6 +352,8 @@ Configuration can make review stricter. It never lets the agent commit, merge,
 push, or deploy without your approval.
 
 ## Deploying the theme
+
+Before launch, run `/seo-check all` and fix its errors.
 
 Deployment is manual. Zip the theme folder **without** the workflow files and
 your token:

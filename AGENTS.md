@@ -133,6 +133,8 @@ then per feature:
 - `cpt` - register a Custom Post Type with its taxonomies, templates, and fields
 - `pixel-check` - compare the rendered LocalWP page with the Figma frame at each
   breakpoint and report measured differences, read-only
+- `seo-check` - check rendered pages (all, one post type, or specific pages)
+  against on-page SEO rules and report where to fix each problem, read-only
 
 #### Build
 
@@ -172,8 +174,8 @@ Commands with meaningful progress should write it when the state directory
 exists: `onboard`, `overview`, `figma`, `wp-theme`, `feature`, `fix`,
 `rollback`, `implement`, `debug`, `check`, `audit`, and `complete`. Short
 orientation and recipe commands (`explore`, `brief`, `status`, `doctor`,
-`section`, `acf`, `cpt`, `pixel-check`, and `check guide`) do not write activity
-state.
+`section`, `acf`, `cpt`, `pixel-check`, `seo-check`, and `check guide`) do not
+write activity state.
 
 Writing the initial activity record is the first action of a tracked command.
 Never create or edit `run.json` directly. From the project root, use:
